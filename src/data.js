@@ -1,38 +1,36 @@
 import image from './img/image';
 
-const data = {
-  products: [
-    {
-      pid: "thokon_tukusu_mamori",
-      image: image.dummy,
-      category: "御守",
-      name: "闘魂尽す守（マグネット式）",
-      type: [],    
-      color: ["赤", "黒"],
-      weight: 10,
-      price: 800
-    },
-    {
-      pid: "kyugi_thokon_mamori",
-      image: image.dummy,
-      category: "御守",
-      name: "球技闘魂守（角）",
-      type: [],    
-      color: ["青", "赤", "白"],
-      weight: 150,
-      price: 700
-    },
-    {
-      pid: "thokon_mamori_kado",
-      image: image.dummy,
-      category: "御守",
-      name: "闘魂守（角）",
-      type: [],    
-      color: ["青", "赤", "白"],
-      weight: 200,
-      price: 700
-    },
-  ]
-};
+const data = [
+  {
+    pid: "deau_wa",
+    image: image.dummy,
+    category: "授与品",
+    name: "出逢う輪",
+    type: [],    
+    color: [],
+    weight: 10,
+    price: 100
+  },
+  {
+    pid: "thokon_tukusu_mamori",
+    image: image.dummy,
+    category: "御守",
+    name: "闘魂尽す守（マグネット式）",
+    type: [],    
+    color: [{ "赤": 0 , "黒": 0 }],
+    weight: 50,
+    price: 200
+  },
+  {
+    pid: "e_ma",
+    image: image.dummy,
+    category: "授与品",
+    name: "絵馬",
+    type: [{ "スポーツ系": 0, "恋愛成就": 0, "文化系": 0 }],    
+    color: [],
+    weight: 100,
+    price: 300
+  },
+];
 
 export default data;
