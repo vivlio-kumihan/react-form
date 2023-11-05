@@ -120,7 +120,7 @@ const NameCounter = ({ name, fee }) => {
     setCount(count + 1);
   };
   const countDown = () => {
-    setCount(count - 1);
+    count > 0 ? setCount(count - 1) : setCount(0)
   };
   const countReset = () => {
     setCount(0);
@@ -142,7 +142,7 @@ const TypeCounter = ({ typeValue, fee }) => {
     setCount(count + 1);
   };
   const countDown = () => {
-    setCount(count - 1);
+    count > 0 ? setCount(count - 1) : setCount(0)
   };
   const countReset = () => {
     setCount(0);
@@ -164,7 +164,7 @@ const ColorCounter = ({ colorValue, fee }) => {
     setCount(count + 1);
   };
   const countDown = () => {
-    setCount(count - 1);
+    count > 0 ? setCount(count - 1) : setCount(0)
   };
   const countReset = () => {
     setCount(0);
