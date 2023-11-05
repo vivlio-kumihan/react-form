@@ -52,39 +52,43 @@ function App() {
   return (
     <div className="App">
     {product.map((item) => (
+      <div key={item.pid}>
       <ul key={item.pid}>
         {item.type.length === 0 && item.color.length === 0
           ? 
-          <>
-            <NameCounter 
-              key={item.name} 
-              name={item.name} 
-              fee={item.price} 
-            />
-          </>
+          <NameCounter 
+            key={item.name} 
+            name={item.name} 
+            fee={item.price} 
+          />
           : item.name
         }
         <li>
-          {item.type && item.type[0]
-            ? Object.entries(item.type[0]).map(([key, value]) => (
-              <TypeCounter key={key} type={key} fee={item.price} />
+          {item.type.length > 0
+            ? item.type.map((typeValue) => (
+              <TypeCounter 
+                key={typeValue} 
+                typeValue={typeValue} 
+                fee={item.price} 
+              />
             ))
             : ""}
         </li>
         <li>
-          <ul>
-          {item.color && item.color[0]
-            ? Object.entries(item.color[0]).map((key) => (
-              <li key={key}>
-                <ColorCounter key={key} color={key} fee={item.price} />
-              </li>
+          {item.color.length > 0
+            ? item.color.map((colorValue) => (
+              <ColorCounter 
+                key={colorValue} 
+                colorValue={colorValue} 
+                fee={item.price} 
+              />
             ))
             : ""}
-          </ul>
         </li>
-        <li>{item.weight}</li>
-        <li>{item.price}</li>
+        <li>重量:&nbsp;{item.weight}</li>
+        <li>単価:&nbsp;{item.price}</li>
       </ul>
+    </div>
     ))}
 
     <select 
@@ -95,7 +99,12 @@ function App() {
     >
       {
         LOCATION.map(location => (
-          <option key={location} value={location}>{location}</option>
+          <option 
+            key={location} 
+            value={location}
+          >
+            {location}
+          </option>
         ))
       }
     </select>
@@ -104,6 +113,7 @@ function App() {
   );
 }
 
+// Child Compornents ///////////////////////////////
 const NameCounter = ({ name, fee }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
@@ -112,18 +122,21 @@ const NameCounter = ({ name, fee }) => {
   const countDown = () => {
     setCount(count - 1);
   };
-  const subTotal = fee * count;
+  const countReset = () => {
+    setCount(0);
+  };
   
   return (
-    <>
-      <button onClick={countUp}>plus</button>
+    <li>
       <p>{`${name}: ${count}`}</p>
-      <button onClick={countDown}>minus</button>
-    </>
+      <button onClick={countUp}>plus&nbsp;|&nbsp;</button>
+      <button onClick={countDown}>minus&nbsp;|&nbsp;</button>
+      <button onClick={countReset}>reset</button>
+    </li>
   );
 }
 
-const TypeCounter = ({ type, fee }) => {
+const TypeCounter = ({ typeValue, fee }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
     setCount(count + 1);
@@ -131,17 +144,21 @@ const TypeCounter = ({ type, fee }) => {
   const countDown = () => {
     setCount(count - 1);
   };
+  const countReset = () => {
+    setCount(0);
+  };  
 
   return (
     <>
-      <button onClick={countUp}>plus</button>
-      <p>{`${type}: ${count}`}</p>
-      <button onClick={countDown}>minus</button>
+      <p>{`${typeValue}: ${count}`}</p>
+      <button onClick={countUp}>plus&nbsp;|&nbsp;</button>
+      <button onClick={countDown}>minus&nbsp;|&nbsp;</button>
+      <button onClick={countReset}>reset</button>
     </>
   );
 };
 
-const ColorCounter = ({ color }) => {
+const ColorCounter = ({ colorValue, fee }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
     setCount(count + 1);
@@ -149,12 +166,16 @@ const ColorCounter = ({ color }) => {
   const countDown = () => {
     setCount(count - 1);
   };
+  const countReset = () => {
+    setCount(0);
+  };  
 
   return (
     <>
-      <button onClick={countUp}>plus</button>
-      <p>{`${color}: ${count}`}</p>
-      <button onClick={countDown}>minus</button>
+      <p>{`${colorValue}: ${count}`}</p>
+      <button onClick={countUp}>plus&nbsp;|&nbsp;</button>
+      <button onClick={countDown}>minus&nbsp;|&nbsp;</button>
+      <button onClick={countReset}>reset</button>
     </>
   );
 };

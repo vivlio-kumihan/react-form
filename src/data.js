@@ -17,7 +17,7 @@ const data = [
     category: "御守",
     name: "闘魂尽す守（マグネット式）",
     type: [],    
-    color: [{ "赤": 0 , "黒": 0 }],
+    color: ["赤", "黒"],
     weight: 50,
     price: 200
   },
@@ -26,7 +26,7 @@ const data = [
     image: image.dummy,
     category: "授与品",
     name: "絵馬",
-    type: [{ "スポーツ系": 0, "恋愛成就": 0, "文化系": 0 }],    
+    type: ["スポーツ系", "恋愛成就", "文化系"],    
     color: [],
     weight: 100,
     price: 300
