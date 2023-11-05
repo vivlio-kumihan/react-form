@@ -1,21 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import data from "./data";
 
 import './App.css';
 
 function App() {
   const [product, setProduct] = useState(data);
+
   const [selected, setSelected] = useState("");
+
   const [nameTotalCount, setNameTotalCount] = useState(0);
+  const [nameTotalFee, setNameTotalFee] = useState(0);
+
   const [typeTotalCount, setTypeTotalCount] = useState(0);
+  const [typeTotalFee, setTypeTotalFee] = useState(0);
+
   const [colorTotalCount, setColorTotalCount] = useState(0);
+  const [colorTotalFee, setColorTotalFee] = useState(0);
+
   const [totalFee, setTotalFee] = useState(0);
 
-  const calcTotal = (unitPrice) => {
-    const total = 
-      nameTotalCount  * unitPrice +
-      typeTotalCount  * unitPrice + 
-      colorTotalCount * unitPrice;
+  useEffect(() => {
+    calcTotal();
+  }, [nameTotalCount, typeTotalCount, colorTotalCount]);
+
+  const calcTotal = () => {
+    let nameTotal = 0;
+    let typeTotal = 0;
+    let colorTotal = 0;
+
+    product.forEach(item => {
+      if (item.type.length === 0 && item.color.length === 0) {
+        nameTotal += nameTotalCount * item.price;
+      } else if (item.type.length > 0) {
+        typeTotal += typeTotalCount * item.price;
+      } else {
+        colorTotal += colorTotalCount * item.price;
+      }
+    });
+
+    setNameTotalFee(nameTotal);
+    setTypeTotalFee(typeTotal);
+    setColorTotalFee(colorTotal);
+    const total = nameTotal + typeTotal + colorTotal;
     setTotalFee(total);
   };
 
@@ -157,27 +183,24 @@ function App() {
 }
 
 // Child Compornents ///////////////////////////////
-const NameCounter = ({ name, fee, nameTotalCount, setNameTotalCount, calcTotal }) => {
-// const NameCounter = ({ name, fee, nameTotalCount, setNameTotalCount }) => {
+const NameCounter = ({ name, nameTotalCount, setNameTotalCount, calcTotal }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
     setCount(count + 1);
     setNameTotalCount(nameTotalCount + 1);
-    calcTotal(fee);
+    calcTotal();
   };
   const countDown = () => {
     if (count > 0) {
       setCount(count - 1);
       setNameTotalCount(nameTotalCount - 1);
-      calcTotal(fee);
-    } else {
-      setCount(0)
+      calcTotal();
     }
   };
   const countReset = () => {
     setCount(0);
     setNameTotalCount(nameTotalCount - count);
-    calcTotal(fee);
+    calcTotal();
   }; 
   
   return (
@@ -190,26 +213,24 @@ const NameCounter = ({ name, fee, nameTotalCount, setNameTotalCount, calcTotal }
   );
 }
 
-const TypeCounter = ({ typeValue, fee, typeTotalCount, setTypeTotalCount, calcTotal }) => {
+const TypeCounter = ({ typeValue, typeTotalCount, setTypeTotalCount, calcTotal }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
     setCount(count + 1);
     setTypeTotalCount(typeTotalCount + 1);
-    calcTotal(fee);
+    calcTotal();
   };
   const countDown = () => {
     if (count > 0) {
       setCount(count - 1);
       setTypeTotalCount(typeTotalCount - 1);
-      calcTotal(fee);
-    } else {
-      setCount(0)
+      calcTotal();
     }
   };
   const countReset = () => {
     setCount(0);
     setTypeTotalCount(typeTotalCount - count);
-    calcTotal(fee);
+    calcTotal();
   }; 
 
   return (
@@ -222,26 +243,24 @@ const TypeCounter = ({ typeValue, fee, typeTotalCount, setTypeTotalCount, calcTo
   );
 };
 
-const ColorCounter = ({ colorValue, fee, colorTotalCount, setColorTotalCount, calcTotal }) => {
+const ColorCounter = ({ colorValue, colorTotalCount, setColorTotalCount, calcTotal }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
     setCount(count + 1);
     setColorTotalCount(colorTotalCount + 1);
-    calcTotal(fee);
+    calcTotal();
   };
   const countDown = () => {
     if (count > 0) {
       setCount(count - 1);
       setColorTotalCount(colorTotalCount - 1);
-      calcTotal(fee);
-    } else {
-      setCount(0)
+      calcTotal();
     }
   };
   const countReset = () => {
     setCount(0);
     setColorTotalCount(colorTotalCount - count);
-    calcTotal(fee);
+    calcTotal();
   };
 
   return (
