@@ -6,6 +6,18 @@ import './App.css';
 function App() {
   const [product, setProduct] = useState(data);
   const [selected, setSelected] = useState("");
+  const [nameTotalCount, setNameTotalCount] = useState(0);
+  const [typeTotalCount, setTypeTotalCount] = useState(0);
+  const [colorTotalCount, setColorTotalCount] = useState(0);
+  const [totalFee, setTotalFee] = useState(0);
+
+  const calcTotal = (unitPrice) => {
+    const total = 
+      nameTotalCount  * unitPrice +
+      typeTotalCount  * unitPrice + 
+      colorTotalCount * unitPrice;
+    setTotalFee(total);
+  };
 
   // 都道府県
   const LOCATION = [
@@ -47,12 +59,10 @@ function App() {
   // fee[{ propsで方面 }][{ propsでグラム数 }]
   // 条件分岐で回さないとエラーになる。
   const sendFee = direction ? fee[direction][10] : "";
-  console.log(sendFee);
   
   return (
     <div className="App">
     {product.map((item) => (
-      <div key={item.pid}>
       <ul key={item.pid}>
         {item.type.length === 0 && item.color.length === 0
           ? 
@@ -60,6 +70,9 @@ function App() {
             key={item.name} 
             name={item.name} 
             fee={item.price} 
+            nameTotalCount={nameTotalCount}
+            setNameTotalCount={setNameTotalCount}  
+            calcTotal={calcTotal}
           />
           : item.name
         }
@@ -70,6 +83,9 @@ function App() {
                 key={typeValue} 
                 typeValue={typeValue} 
                 fee={item.price} 
+                typeTotalCount={typeTotalCount}
+                setTypeTotalCount={setTypeTotalCount}
+                calcTotal={calcTotal}
               />
             ))
             : ""}
@@ -81,15 +97,42 @@ function App() {
                 key={colorValue} 
                 colorValue={colorValue} 
                 fee={item.price} 
+                colorTotalCount={colorTotalCount}
+                setColorTotalCount={setColorTotalCount}
+                calcTotal={calcTotal}
               />
             ))
             : ""}
         </li>
+        {
+          item.type.length === 0 && item.color.length === 0
+            ? <li>
+                <p>個数:&nbsp;{nameTotalCount}</p>
+                <p>小計:&nbsp;{item.price * nameTotalCount}</p>
+              </li>
+            : ""
+        }
+        {
+          item.type.length > 0
+            ? <li>
+                <p>個数:&nbsp;{typeTotalCount}</p>
+                <p>小計:&nbsp;{item.price * typeTotalCount}</p>
+              </li>
+            : ""
+        }
+        {
+          item.color.length > 0
+            ? <li>
+                <p>個数:&nbsp;{colorTotalCount}</p>
+                <p>小計:&nbsp;{item.price * colorTotalCount}</p>
+              </li>
+            : ""
+        }
         <li>重量:&nbsp;{item.weight}</li>
         <li>単価:&nbsp;{item.price}</li>
       </ul>
-    </div>
     ))}
+    <h3>合計金額:&nbsp;{totalFee}</h3>
 
     <select 
       value={selected}
@@ -109,22 +152,33 @@ function App() {
       }
     </select>
     <div>選択された都道府県: {selected}</div>
-  </div>
+    </div>
   );
 }
 
 // Child Compornents ///////////////////////////////
-const NameCounter = ({ name, fee }) => {
+const NameCounter = ({ name, fee, nameTotalCount, setNameTotalCount, calcTotal }) => {
+// const NameCounter = ({ name, fee, nameTotalCount, setNameTotalCount }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
     setCount(count + 1);
+    setNameTotalCount(nameTotalCount + 1);
+    calcTotal(fee);
   };
   const countDown = () => {
-    count > 0 ? setCount(count - 1) : setCount(0)
+    if (count > 0) {
+      setCount(count - 1);
+      setNameTotalCount(nameTotalCount - 1);
+      calcTotal(fee);
+    } else {
+      setCount(0)
+    }
   };
   const countReset = () => {
     setCount(0);
-  };
+    setNameTotalCount(nameTotalCount - count);
+    calcTotal(fee);
+  }; 
   
   return (
     <li>
@@ -136,17 +190,27 @@ const NameCounter = ({ name, fee }) => {
   );
 }
 
-const TypeCounter = ({ typeValue, fee }) => {
+const TypeCounter = ({ typeValue, fee, typeTotalCount, setTypeTotalCount, calcTotal }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
     setCount(count + 1);
+    setTypeTotalCount(typeTotalCount + 1);
+    calcTotal(fee);
   };
   const countDown = () => {
-    count > 0 ? setCount(count - 1) : setCount(0)
+    if (count > 0) {
+      setCount(count - 1);
+      setTypeTotalCount(typeTotalCount - 1);
+      calcTotal(fee);
+    } else {
+      setCount(0)
+    }
   };
   const countReset = () => {
     setCount(0);
-  };  
+    setTypeTotalCount(typeTotalCount - count);
+    calcTotal(fee);
+  }; 
 
   return (
     <>
@@ -158,17 +222,27 @@ const TypeCounter = ({ typeValue, fee }) => {
   );
 };
 
-const ColorCounter = ({ colorValue, fee }) => {
+const ColorCounter = ({ colorValue, fee, colorTotalCount, setColorTotalCount, calcTotal }) => {
   const [count, setCount] = useState(0);
   const countUp = () => {
     setCount(count + 1);
+    setColorTotalCount(colorTotalCount + 1);
+    calcTotal(fee);
   };
   const countDown = () => {
-    count > 0 ? setCount(count - 1) : setCount(0)
+    if (count > 0) {
+      setCount(count - 1);
+      setColorTotalCount(colorTotalCount - 1);
+      calcTotal(fee);
+    } else {
+      setCount(0)
+    }
   };
   const countReset = () => {
     setCount(0);
-  };  
+    setColorTotalCount(colorTotalCount - count);
+    calcTotal(fee);
+  };
 
   return (
     <>
